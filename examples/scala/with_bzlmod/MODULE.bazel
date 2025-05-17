@@ -1,4 +1,5 @@
 bazel_dep(name = "rules_scala", version = "7.0.0")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
 
 scala_config = use_extension(
     "@rules_scala//scala/extensions:config.bzl",
@@ -12,3 +13,14 @@ scala_deps = use_extension(
 )
 scala_deps.scala()
 scala_deps.scalatest()
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "org.apache.logging.log4j:log4j-api:2.23.0",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+use_repo(maven, "maven")
